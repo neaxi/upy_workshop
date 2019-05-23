@@ -27,7 +27,7 @@ Setting it up for ESP32:
  - install thonny-esp plug-in
     - Tools > Manage Plug-Ins > `thonny-esp`> install
     - restart Thonny IDE 
- - Tools > Options > Interpreter > ESP32
+ - Tools > Options > Interpreter > MicroPython on ESP32
 
 **More resources:**  
 on IDE: [Thonny: The Beginner-Friendly Python Editor](https://realpython.com/python-thonny/)  
@@ -40,11 +40,17 @@ There are other IDEs, like [uPyCraft](http://docs.dfrobot.com/upycraft/) or you 
 
 
 ## Input/Output
-### Output
+[io.py](io.py)
+**Output** - Built-in onboard LED is connected to Pin2.  
 ### Input
 #### Blocking
+We're periodically checking for state change of the pin in a loop. Waiting blocks the CPU, while it could be doing other operations. Also the application won't respond to the user meanwhile.
 #### Non-blocking, IRQ
+Utilizes hardware interrupts. When state change on the pin is detected, interrupt is raised and calls the function binded to it.
 #### Non-blocking, uasyncio
+libraries needed: [uasyncio](https://github.com/peterhinch/micropython-async) and [aswitch](https://github.com/peterhinch/micropython-async/blob/master/aswitch.py)  
+Takes advantage of asynchronous programming, which allows to run multiple tasks in parallel.  
+aswitch library has built-in class for pushbutton, which correctly handles click, double-click, long press and filters out the button bounces.
 
 ## Connectivity
 ### Automatic WiFi connection and RTC clock sync
