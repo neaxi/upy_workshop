@@ -8,9 +8,9 @@ ESP32 board ("WeMos" D1 R32 in our case) with MicroPython.
 [MicroPython firmware download page](https://micropython.org/download#esp32)
 For purposes of our workshop, please download following: 
  - Download link 
-  -- Based on: [esp32-ppp-fix.bin](https://micropython.org/resources/firmware/esp32-ppp-fix.bin) (most recent today - 2019-05-23)
-  -- Embedded with uasyncio and aswitch libraries
-  -- With script to connect network and sync RTC via NTP on boot
+    - Based on: [esp32-ppp-fix.bin](https://micropython.org/resources/firmware/esp32-ppp-fix.bin) (most recent today - 2019-05-23)
+    - Embedded with uasyncio and aswitch libraries
+    - With script to connect network and sync RTC via NTP on boot
 
 ### Software
 #### Drivers
@@ -24,8 +24,8 @@ Getting the IDE:
 
 Setting it up for ESP32:
  - install thonny-esp plug-in
-  -- Tools > Manage Plug-Ins > `thonny-esp`> install
-  -- restart Thonny IDE 
+    - Tools > Manage Plug-Ins > `thonny-esp`> install
+    - restart Thonny IDE 
  - Tools > Options > Interpreter > ESP32
 
 **More resources:**
