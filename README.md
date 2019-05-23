@@ -19,8 +19,8 @@ linux / MAC: ¯\\_(ツ)_/¯
 #### IDE
 [Thonny IDE](https://thonny.org/) was picked for this workshop. Reasons? Can be installed via pip, automatically detects and handles COM communication and allows us to flash firmware, so we don't have to utilize any other application.  
 Getting the IDE: 
- - [Thonny IDE Download Page](https://github.com/thonny/thonny/releases)
-or
+ - [Thonny IDE Download Page](https://github.com/thonny/thonny/releases)  
+ or
  - `pip3 install thonny` and `python3 -m thonny`
 
 Setting it up for ESP32:
@@ -56,7 +56,7 @@ More details available [here](https://techtutorialsx.com/2017/06/06/esp32-esp826
 ## Troubleshooting
 ###
 **Error Numbers** https://github.com/micropython/micropython-lib/blob/master/errno/errno.py
-#### Issues with network connections
+#### `IndexError: list index out of range`
 Any operation requiring operational network connection (NTP, API requests, ...) can throw `IndexError: list index out of range`  
 **Solution**: Make sure your network connection is working properly.
 
@@ -89,6 +89,8 @@ Having `'connection' : 'close'`in request headers is not sufficient!
 
 
 ## Sidenotes
+[MicroPython API reference](https://docs.micropython.org/en/latest/esp32/quickref.html)
+
 ### Memory management
 ```py
 import gc
