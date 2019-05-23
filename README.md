@@ -14,12 +14,13 @@ For purposes of our workshop, please download following:
 
 ### Software
 #### Drivers
-Windows: If the drivers for CH430 are not installed automatically, thay can be obtained [here ](https://wiki.wemos.cc/_media/ch341ser_win_3.4.zip)
+Windows: If the drivers for CH430 are not installed automatically, thay can be obtained [here ](https://wiki.wemos.cc/_media/ch341ser_win_3.4.zip)  
 linux / MAC: ¯\\_(ツ)_/¯
 #### IDE
 [Thonny IDE](https://thonny.org/) was picked for this workshop. Reasons? Can be installed via pip, automatically detects and handles COM communication and allows us to flash firmware, so we don't have to utilize any other application.  
 Getting the IDE: 
  - [Thonny IDE Download Page](https://github.com/thonny/thonny/releases)
+or
  - `pip3 install thonny` and `python3 -m thonny`
 
 Setting it up for ESP32:
@@ -28,7 +29,7 @@ Setting it up for ESP32:
     - restart Thonny IDE 
  - Tools > Options > Interpreter > ESP32
 
-**More resources:**
+**More resources:**  
 on IDE: [Thonny: The Beginner-Friendly Python Editor](https://realpython.com/python-thonny/)  
 on using IDE with ESP: [Getting Started with Thonny MicroPython (Python) IDE for ESP32 and ESP8266](https://randomnerdtutorials.com/getting-started-thonny-micropython-python-ide-esp32-esp8266/)
 
@@ -56,8 +57,7 @@ More details available [here](https://techtutorialsx.com/2017/06/06/esp32-esp826
 ###
 **Error Numbers** https://github.com/micropython/micropython-lib/blob/master/errno/errno.py
 #### Issues with network connections
-Any operation, that requires operational network connection (NTP, API requests, ...) can throw `IndexError: list index out of range`
-
+Any operation requiring operational network connection (NTP, API requests, ...) can throw `IndexError: list index out of range`  
 **Solution**: Make sure your network connection is working properly.
 
 #### Issues with urequests.put()
@@ -72,7 +72,7 @@ Traceback (most recent call last):
   File "urequests.py", line 60, in request
 OSError: [Errno 5] EIO
 ```
-Application successfully sent one PUT request, then died with following error. Seems to be caused by lack of RAM on the ESP per https://github.com/micropython/micropython-esp32/issues/209.
+Application successfully sent one PUT request, then died with following error. Seems to be caused by lack of RAM on the ESP per https://github.com/micropython/micropython-esp32/issues/209.  
 **Solution:** `.close()` the connection manually prior starting another request. (For multiple parallel HTTPS connections look for ESP32 with SPI RAM )  
   &nbsp;
  ```py  
@@ -84,7 +84,8 @@ Close the connection with .close() when you're done with it.
 Application sent succesfully 10 requests. Failed on 11th.
 **Solution:** Same as previous. Close each connection manually with `.close()` prior starting a new one.
 
-Both issues requires manually calling `.close()` on the urequests session object. Having `'connection' : 'close'`in request headers is not sufficient!
+Both issues requires manually calling `.close()` on the urequests session object.  
+Having `'connection' : 'close'`in request headers is not sufficient!
 
 
 ## Sidenotes
