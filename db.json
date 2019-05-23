@@ -1,4 +1,6 @@
 {
+    "_comment1":"db.json file to be used with http://my-json-server.typicode.com",
+    "_comment2":"JSON validator & linter https://jsonformatter.curiousconcept.com/",
     "posts":[
         {
             "id":"device00",
