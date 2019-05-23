@@ -40,8 +40,9 @@ There are other IDEs, like [uPyCraft](http://docs.dfrobot.com/upycraft/) or you 
 
 
 ## Input/Output
-[io.py](io.py)
-**Output** - Built-in onboard LED is connected to Pin2.  
+[io.py](io.py) - code related to following I/O operations
+### Output
+Built-in onboard LED is connected to Pin2. Let's try to turn it on and off.
 ### Input
 #### Blocking
 We're periodically checking for state change of the pin in a loop. Waiting blocks the CPU, while it could be doing other operations. Also the application won't respond to the user meanwhile.
@@ -54,10 +55,10 @@ aswitch library has built-in class for pushbutton, which correctly handles click
 
 ## Connectivity
 ### Automatic WiFi connection and RTC clock sync
-
-
 More details available [here](https://techtutorialsx.com/2017/06/06/esp32-esp8266-micropython-automatic-connection-to-wifi/)
-
+### API calls
+#### GET request
+#### POST/PUT request
 
 ## Troubleshooting
 ###
