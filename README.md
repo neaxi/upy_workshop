@@ -101,7 +101,7 @@ Each network request has variable fields like headers, cookies, ... We don't nee
 HTTP GET request is utilized to acquire data from the API.
 ```py
 import urequests
-url = "..."
+url = "https://..."
 response = urequests.get(url)
 print(str(response.status_code), response.reason)
 print(response.text)
@@ -117,14 +117,12 @@ Difference in case of M2X platform:
  
 ```py
 headers = {"Content-Type" : "application/json"}
-data = {"value" : "10"}
+payload = {"value" : "10"}
+url = "https://..."
 
-def api_put(url, payload):
-    resp = urequests.put(url, data=json.dumps(payload), headers=headers)
-    print("request status:", str(resp.status_code), str(resp.reason))
-    print("Response - raw data:", resp.text)
-
-api_put("https://...", data)
+resp = urequests.put(url, data=json.dumps(payload), headers=headers)
+print("request status:", str(resp.status_code), str(resp.reason))
+print("Response - raw data:", resp.text)
 ```
 [detailed guide for POST requests](https://techtutorialsx.com/2017/06/18/esp32-esp8266-micropython-http-post-requests/)
 
