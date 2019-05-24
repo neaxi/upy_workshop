@@ -80,8 +80,11 @@ APIs (Application Programming Interfaces) are used to communicate between device
 [M2X API overview](https://m2x.att.com/developer/documentation/v2/overview)  
 [M2X API cheatsheet](https://m2x.att.com/developer/documentation/v2/cheatsheet)  
 
-#### Pre-set AT&T M2X devices
-Few devices were created on the M2X platform for purposes of this workshop, so we can interface our ESP boards with a cloud service. Each of these devices has 2 data streams. One accepts numeric values only (`id:numeric`), the other custom strings (`id:non-numeric`). To reach API of these devices, we need `device_id` (to know which device to reach) and `api_key` (to authorize us).  
+#### Pre-set M2X devices
+Few devices were created on the M2X platform for purposes of this workshop, so we can interface our ESP boards with a cloud service. Each of these devices has 2 data streams. One accepts numeric values only (`id:numeric`), the other custom strings (`id:non-numeric`).  
+To contact the API make sure following is set correctly in `config.py`  
+ - `m2x_device_id` - unique ID of the device
+ - `m2x_api_key` - key which authorizes us to perform changes 
 
 Dashboard to monitor workshop devices: [M2X AT&T Brno IoT training dashboard](https://m2x.att.com/dashboards/shared/5b4c39b189bbbc2469ba907df99cd6e6)
 #### Request headers
