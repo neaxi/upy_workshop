@@ -42,17 +42,21 @@ There are other IDEs, like [uPyCraft](http://docs.dfrobot.com/upycraft/) or you 
 ## Input/Output
 [io.py](io.py) - code related to following I/O operations
 ### Output
-Built-in onboard LED is connected to Pin2. Let's try to turn it on and off.
+Built-in onboard LED is connected to Pin2. Let's try to turn it on and off.  
+`>>> io.blink()`
 ### Input
 #### Blocking
-We're periodically checking for state change of the pin in a loop. Waiting blocks the CPU, while it could be doing other operations. Also the application won't respond to the user meanwhile.
+We're periodically checking for state change of the pin in a loop. Also the application won't respond to the user while it's running the loop. Although the functions sets both buttons, the program stucks on the checking loop for the first.  
+`>>> io.test_blocking_input()`
 #### Non-blocking, IRQ
-Utilizes hardware interrupts. When state change on the pin is detected, interrupt is raised and calls the function binded to it.
+Utilizes hardware interrupts. When state change on the pin is detected, interrupt is raised and calls the function binded to it.  
+`>>> io.test_non_blocking_irq()`
 #### Non-blocking, uasyncio
 libraries needed: [uasyncio](https://github.com/peterhinch/micropython-async) and [aswitch](https://github.com/peterhinch/micropython-async/blob/master/aswitch.py)  
 Takes advantage of asynchronous programming, which allows to run multiple tasks in parallel.  
-aswitch library has built-in class for pushbutton, which correctly handles click, double-click, long press and filters out the button bounces.
-
+aswitch library has built-in class for pushbutton, which correctly handles click, double-click, long press and filters out the button bounces.  
+`asyncio.await()` in the `async_tick_tock()` pauses the cycle execution, so asyncio can run other tasks queued in the asyncio event loop.  
+`>>> io.test_non_blocking_asyncio()`
 ## Connectivity
 ### Automatic WiFi connection and RTC clock sync
 More details available [here](https://techtutorialsx.com/2017/06/06/esp32-esp8266-micropython-automatic-connection-to-wifi/)
@@ -98,6 +102,19 @@ Having `'connection' : 'close'`in request headers is not sufficient!
 ## Sidenotes
 [MicroPython API reference](https://docs.micropython.org/en/latest/esp32/quickref.html)
 
+### Libraries installation
+**Automatic**  
+```py
+import upip
+upip.install('micropython-uasyncio')
+```
+**Manual download**  
+`%upload <source> <target>` is a Thonny IDE built-in command
+```
+https://raw.githubusercontent.com/peterhinch/micropython-async/master/aswitch.py
+%upload aswitch.py aswitch.py
+```
+
 ### Memory management
 ```py
 import gc
@@ -131,8 +148,12 @@ https://github.com/goatchurchprime/jupyter_micropython_kernel/
 #### Files in this repo
  - config files:
     - [`db.json`](db.json) - used by typicode service to have API to test against
-    - [`creds_m2x.py`](creds_m2x.py) - contains `api_key` and `device_id` used for M2X connections
-    - [`creds_wifi.py`](creds_wifi.py) - contains `ssid` and `passwd` used by auto-connection script
+    - [`config.py`](config.py)
+       - `pin_btn1`, `pin_btn2` - hardware pins on which we connected the buttons
+       - `ssid` - to which wi-fi network shall we connect? used for automatic connection
+       - `passwd` - wi-fi password  
+       - `m2x_device_id` - M2X device we're updating
+       - `m2x_api_key` - device access key for the M2X
  - functional files 
     - [`wifi_and_ntp.py`](wifi_and_ntp.py) - utility for automatic wifi and ntp connection
     - [`io.py`](io.py) - hardware input/output related code
