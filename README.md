@@ -1,4 +1,5 @@
 # MicroPython workshop on ESP32 
+These informations are not intended as a stand alone study material but rather as an aid and possible future reference for students which attended the workshop in person.
 ## Set-up
 ### Hardware
 ESP32 board ("WeMos" D1 R32 in our case) with MicroPython.  
@@ -71,8 +72,32 @@ aswitch library has built-in class for pushbutton, which correctly handles click
 
 More details available [here](https://techtutorialsx.com/2017/06/06/esp32-esp8266-micropython-automatic-connection-to-wifi/)
 ### API calls
+APIs (Application Programming Interfaces) are used to communicate between devices (IoT, servers, clients, ...). If offered to work with REST or SOAP API, politely decline SOAP and preffer REST.  
+[Detailed introduction to general concept of APIs available here.](https://www.programmableweb.com/api-university/what-are-apis-and-how-do-they-work)  
+[AT&T M2X](http://m2x.att.com/) platform was chosen for this workshop for it's simplicity. Similar platforms supporting IoT integration could be [ThingSpeak](https://thingspeak.com/), [IFTTT](https://thingspeak.com/) and many others...  
+&nbsp;  
+#### Pre-set AT&T M2X devices
+Few devices were created on the M2X platform for purposes of this workshop, so we can interface our ESP boards with a cloud service. Each of these devices has 2 data streams. One accepts numeric values only (`id:numeric`), the other custom strings (`id:non-numeric`). To reach API of these devices, we need `device_id` (to know which device to reach) and `api_key` (to authorize us).  
+Dashboard to monitor workshop devices: [M2X AT&T Brno IoT training dashboard](https://m2x.att.com/dashboards/shared/5b4c39b189bbbc2469ba907df99cd6e6)
+#### Request headers
+Each network request has variable fields like headers, cookies, ... We don't need any cookies for this workshop, but will need to headers to:
+ - `X-M2X-KEY` - authorize to the API
+ - `Content-Type` - identify what type of data are we sending
+ - `connection` - to indicate the connection can be closed once completed
+ ```py
+ headers = {
+"X-M2X-KEY" : m2x_api_key,
+"Content-Type" : "application/json",
+"connection" : "close"
+}
+```
+
 #### GET request
+HTTP GET request is utilized to acquire data from the API.
+
+
 #### POST/PUT request
+HTTP POST/PUT requests are used to send data to the API.
 
 ## Troubleshooting
 ###
