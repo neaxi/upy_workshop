@@ -59,6 +59,16 @@ aswitch library has built-in class for pushbutton, which correctly handles click
 `>>> io.test_non_blocking_asyncio()`
 ## Connectivity
 ### Automatic WiFi connection and RTC clock sync
+1. upload provided `wifi_and_ntp.py` into root directory on the ESP
+1. make sure `config.py` contains correct `wifi_ssid` and `wifi_passwd`
+1. add following 2 lines into `boot.py`, to have it executed on every board reboot and deepsleep wake
+   ```py
+   import wifi_and_ntp
+   wifi_and_ntp.startup()
+   ```
+1. reboot the board
+1. If performed correctly, it should automatically connect to the WiFi network, print IP config and perform synchronizaton on ESP RTC clocks with NTP
+
 More details available [here](https://techtutorialsx.com/2017/06/06/esp32-esp8266-micropython-automatic-connection-to-wifi/)
 ### API calls
 #### GET request
