@@ -34,7 +34,7 @@ def tick_tock():
         time.sleep(0.5)
 
 
-async def a_tick_tock():
+async def async_tick_tock():
     ''' async variant of tick_tock, notice `await` in the loop '''
     while(True):
         tt()
@@ -134,5 +134,5 @@ def test_non_blocking_asyncio():
     loop = asyncio.get_event_loop(runq_len=40, waitq_len=40)
     asyncio.ensure_future(test_btn(pin18))
     asyncio.ensure_future(test_btn(pin19))
-    asyncio.ensure_future(a_tick_tock())
+    asyncio.ensure_future(async_tick_tock())
     loop.run_forever()
