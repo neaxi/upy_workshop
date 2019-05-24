@@ -73,11 +73,16 @@ aswitch library has built-in class for pushbutton, which correctly handles click
 More details available [here](https://techtutorialsx.com/2017/06/06/esp32-esp8266-micropython-automatic-connection-to-wifi/)
 ### API calls
 APIs (Application Programming Interfaces) are used to communicate between devices (IoT, servers, clients, ...). If offered to work with REST or SOAP API, politely decline SOAP and preffer REST.  
-[Detailed introduction to general concept of APIs available here.](https://www.programmableweb.com/api-university/what-are-apis-and-how-do-they-work)  
+[Detailed introduction to general concept of APIs available here.](https://www.programmableweb.com/api-university/what-are-apis-and-how-do-they-work)
+#### M2X
 [AT&T M2X](http://m2x.att.com/) platform was chosen for this workshop for it's simplicity. Similar platforms supporting IoT integration could be [ThingSpeak](https://thingspeak.com/), [IFTTT](https://thingspeak.com/) and many others...  
 &nbsp;  
+[M2X API overview](https://m2x.att.com/developer/documentation/v2/overview)  
+[M2X API cheatsheet](https://m2x.att.com/developer/documentation/v2/cheatsheet)  
+
 #### Pre-set AT&T M2X devices
 Few devices were created on the M2X platform for purposes of this workshop, so we can interface our ESP boards with a cloud service. Each of these devices has 2 data streams. One accepts numeric values only (`id:numeric`), the other custom strings (`id:non-numeric`). To reach API of these devices, we need `device_id` (to know which device to reach) and `api_key` (to authorize us).  
+
 Dashboard to monitor workshop devices: [M2X AT&T Brno IoT training dashboard](https://m2x.att.com/dashboards/shared/5b4c39b189bbbc2469ba907df99cd6e6)
 #### Request headers
 Each network request has variable fields like headers, cookies, ... We don't need any cookies for this workshop, but will need to headers to:
@@ -94,10 +99,36 @@ Each network request has variable fields like headers, cookies, ... We don't nee
 
 #### GET request
 HTTP GET request is utilized to acquire data from the API.
-
+```py
+import urequests
+url = "..."
+response = urequests.get(url)
+print(str(response.status_code), response.reason)
+print(response.text)
+```
+[detailed guide for GET requests](https://techtutorialsx.com/2017/06/11/esp32-esp8266-micropython-http-get-requests/)
 
 #### POST/PUT request
-HTTP POST/PUT requests are used to send data to the API.
+HTTP POST/PUT requests are used to send data to the API and create/update entries on the endpoint.  
+Difference between POST and PUT: [IETF specs](https://techtutorialsx.com/2017/06/18/esp32-esp8266-micropython-http-post-requests/), [StackOverflow](https://stackoverflow.com/questions/630453/put-vs-post-in-rest)  
+Difference in case of M2X platform:
+ - POST - used to create resources (creation of new devices)
+ - PUT - used to update resources (modifying streams of the device, submitting new values)  
+ 
+```py
+headers = {"Content-Type" : "application/json"}
+data = {"value" : "10"}
+
+def api_put(url, payload):
+    resp = urequests.put(url, data=json.dumps(payload), headers=headers)
+    print("request status:", str(resp.status_code), str(resp.reason))
+    print("Response - raw data:", resp.text)
+
+api_put("https://...", data)
+```
+[detailed guide for POST requests](https://techtutorialsx.com/2017/06/18/esp32-esp8266-micropython-http-post-requests/)
+
+
 
 ## Troubleshooting
 ###
