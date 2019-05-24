@@ -83,20 +83,36 @@ Traceback (most recent call last):
   File "urequests.py", line 60, in request
 OSError: [Errno 5] EIO
 ```
-Application successfully sent one PUT request, then died with following error. Seems to be caused by lack of RAM on the ESP per https://github.com/micropython/micropython-esp32/issues/209.  
-**Solution:** `.close()` the connection manually prior starting another request. (For multiple parallel HTTPS connections look for ESP32 with SPI RAM )  
-  &nbsp;
+Application successfully sent one PUT request, then died with following error. Seems to be caused by lack of RAM on the ESP per [Issue#209](https://github.com/micropython/micropython-esp32/issues/209).  
  ```py  
 OSError: 23
 ENFILE = 23 # File table overflow
-Close the connection with .close() when you're done with it.
-'connection' : 'close' in headers is not sufficient
 ```
-Application sent succesfully 10 requests. Failed on 11th.
-**Solution:** Same as previous. Close each connection manually with `.close()` prior starting a new one.
-
-Both issues requires manually calling `.close()` on the urequests session object.  
+Application sent succesfully 10 requests. Failed on 11th.  
+**Solution:**
+Both issues requires manually calling `.close()` on the urequests session object prior starting a new request.  
 Having `'connection' : 'close'`in request headers is not sufficient!
+For multiple parallel HTTPS connections look for ESP32 with SPI RAM.
+
+#### Queue issues with uasyncio
+```py
+Traceback (most recent call last):
+  File "C:\Users\Fred\ESP\io.py", line 142, in <module>
+  File "C:\Users\Fred\ESP\io.py", line 137, in test_non_blocking_asyncio
+  File "/lib/uasyncio/core.py", line 168, in run_forever
+  File "/lib/uasyncio/core.py", line 59, in call_later_ms
+  File "/lib/uasyncio/core.py", line 64, in call_at_
+IndexError: queue overflow
+
+  File "/Users/dwhall/.micropython/lib/ufarc/__init__.py", line 513, in run_forever
+  File "/Users/dwhall/.micropython/lib/ufarc/__init__.py", line 532, in stop
+  File "uasyncio/core.py", line 183, in stop
+  File "uasyncio/core.py", line 48, in call_soon
+IndexError: full
+```
+When there is too much async events, the asyncio queue (utimeq) fills up. First overflows ([snippet source](https://github.com/dwhall/ufarc/)), then just states it's full and refuses to start. Reboot the board.  
+You have to adjust size of the queue when you're setting up the asyncio loop. [src](https://forum.micropython.org/viewtopic.php?t=5908)  
+`loop = asyncio.get_event_loop(runq_len=40, waitq_len=40)`
 
 
 ## Sidenotes
@@ -109,7 +125,7 @@ import upip
 upip.install('micropython-uasyncio')
 ```
 **Manual download**  
-`%upload <source> <target>` is a Thonny IDE built-in command
+`%upload <source> <target>` is a Thonny IDE built-in command to transfer file from local to ESP
 ```
 https://raw.githubusercontent.com/peterhinch/micropython-async/master/aswitch.py
 %upload aswitch.py aswitch.py
