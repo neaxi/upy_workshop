@@ -52,7 +52,7 @@ We're periodically checking for state change of the pin in a loop. Also the appl
 Utilizes hardware interrupts. When state change on the pin is detected, interrupt is raised and calls the function binded to it.  
 `>>> io.test_non_blocking_irq()`
 #### Non-blocking, uasyncio
-libraries needed: [uasyncio](https://github.com/peterhinch/micropython-async) and [aswitch](https://github.com/peterhinch/micropython-async/blob/master/aswitch.py)  
+libraries needed: [uasyncio](https://github.com/peterhinch/micropython-async) and [aswitch](https://github.com/peterhinch/micropython-async/blob/master/aswitch.py). See [Sidenotes > Libraries installation](###libraries-installation)  
 Takes advantage of asynchronous programming, which allows to run multiple tasks in parallel.  
 aswitch library has built-in class for pushbutton, which correctly handles click, double-click, long press and filters out the button bounces.  
 `asyncio.await()` in the `async_tick_tock()` pauses the cycle execution, so asyncio can run other tasks queued in the asyncio event loop.  
