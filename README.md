@@ -124,8 +124,8 @@ payload = {"value" : "10"}
 url = "https://..."
 
 resp = urequests.put(url, data=json.dumps(payload), headers=headers)
-print("request status:", str(resp.status_code), str(resp.reason))
-print("Response - raw data:", resp.text)
+print("status:", str(resp.status_code), resp.reason)
+print("Response - raw:", resp.text)
 ```
 [detailed guide for POST requests](https://techtutorialsx.com/2017/06/18/esp32-esp8266-micropython-http-post-requests/)
 
