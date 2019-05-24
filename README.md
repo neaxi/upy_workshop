@@ -202,7 +202,7 @@ print('Free RAM: %.2f kB' % (gc.mem_free()/1024))
 gc.collect()
 print('Free RAM: %.2f kB' % (gc.mem_free()/1024))
 ```
-### MD5 keys for devices
+### MD5 keys for device names
 ```py
 import hashlib
 devs = ["device0"+str(i) for i in range(0,10)]
