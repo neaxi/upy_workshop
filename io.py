@@ -12,7 +12,7 @@ micropython.alloc_emergency_exception_buf(100)
 
 # load from config on which pins we have the buttons 
 try:
-    from config import btn01_pin, btn02_pin
+    from config import pin_btn01, pin_btn02
 except:
     raise Exception("Failed to load button pin assignments from config")
 
@@ -89,8 +89,8 @@ def blocking_input(pin):
 
 
 def test_blocking_input():
-    blocking_input(btn01_pin)
-    blocking_input(btn02_pin)
+    blocking_input(pin_btn01)
+    blocking_input(pin_btn02)
     
 
 
@@ -105,8 +105,8 @@ def test_non_blocking_irq():
         then we run a tick_tock loop
         when the button is pressed, it will be visible in the loop printout
     '''    
-    non_blocking_irq(btn01_pin)
-    non_blocking_irq(btn02_pin)
+    non_blocking_irq(pin_btn01)
+    non_blocking_irq(pin_btn02)
     tick_tock()
 
 
@@ -128,8 +128,8 @@ def test_non_blocking_asyncio():
         adds handler for both buttons in the loop
         adds tick_tock to the loop to show its running
     '''
-    pin18 = machine.Pin(btn01_pin, machine.Pin.IN, machine.Pin.PULL_UP)
-    pin19 = machine.Pin(btn02_pin, machine.Pin.IN, machine.Pin.PULL_UP)
+    pin18 = machine.Pin(pin_btn01, machine.Pin.IN, machine.Pin.PULL_UP)
+    pin19 = machine.Pin(pin_btn02, machine.Pin.IN, machine.Pin.PULL_UP)
 
     loop = asyncio.get_event_loop(runq_len=40, waitq_len=40)
     asyncio.ensure_future(test_btn(pin18))
