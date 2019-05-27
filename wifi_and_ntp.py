@@ -2,7 +2,9 @@
 try:
     from config import wifi_ssid, wifi_passwd
 except:
-    raise Exception("Failed to load wifi SSID and/or password from config")
+    # not an exemption, as we might want just to import functions and pass these args manually
+    print("Failed to load wifi SSID and/or password from config")
+    print("Try it manually with wifi_and_ntp.startup(ssid, passwd)")
 
 import time
 import network
@@ -49,6 +51,10 @@ def sync_ntp_time():
         print("NTP time loaded:", "-".join(dt[0:3]), ":".join(dt[3:6]))
 
 
-def startup():
-    wifi_connect(wifi_ssid, wifi_passwd)
+def startup(ssid=None, passwd=None):
+    ''' if no args are provided, use those stored in config '''
+    if not ssid or not passwd:
+        ssid = wifi_ssid
+        passwd = wifi_passwd    
+    wifi_connect(ssid, passwd)
     sync_ntp_time()
