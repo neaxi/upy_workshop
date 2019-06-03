@@ -12,6 +12,19 @@ For purposes of our workshop, please download following:
     - Based on: [esp32-ppp-fix.bin](https://micropython.org/resources/firmware/esp32-ppp-fix.bin) (most recent today - 2019-05-23)
     - Embedded with uasyncio and aswitch libraries
     - With script to connect network and sync RTC via NTP on boot
+#### Flashing firmware
+Always erase the flash first, then install the new firmware.  
+ a) Through Thonny IDE GUI
+   1. Thonny IDE > Device > Erase ESP flash
+   2. Thonny IDE > Device > Install MicroPython on ESP
+
+ b) From CLI via [esptool](https://github.com/espressif/esptool)
+```
+pip3 install esptool
+python -m esptool read_flash 0x00000 0x400000 firmware_image.bin
+python -m esptool erase_flash
+python -m esptool write_flash 0x00000 firmware_image_backup.bin
+```
 
 ### Software
 #### Drivers
