@@ -21,9 +21,9 @@ Always erase the flash first, then install the new firmware.
  b) From CLI via [esptool](https://github.com/espressif/esptool)
 ```
 pip3 install esptool
-python -m esptool read_flash 0x00000 0x400000 firmware_image.bin
-python -m esptool erase_flash
-python -m esptool write_flash 0x00000 firmware_image_backup.bin
+python -m esptool --port COMx read_flash 0x00000 0x400000 firmware_image.bin
+python -m esptool --port COMx erase_flash
+python -m esptool --port COMx --baud 921600 write_flash 0x00000 firmware_image_backup.bin
 ```
 
 ### Software
