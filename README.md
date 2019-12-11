@@ -28,7 +28,7 @@ python -m esptool --port COMx --baud 921600 write_flash 0x00000 firmware_image_b
 
 ### Software
 #### Drivers
-Windows: If the drivers for CH430 are not installed automatically, thay can be obtained [here ](https://wiki.wemos.cc/_media/ch341ser_win_3.4.zip)  
+Windows: If the drivers for CH340/341 are not installed automatically, thay can be obtained [here ](https://wiki.wemos.cc/_media/ch341ser_win_3.4.zip)  
 linux / MAC: ¯\\_(ツ)_/¯
 #### IDE
 [Thonny IDE](https://thonny.org/) was picked for this workshop. Reasons? Can be installed via pip, automatically detects and handles serial port communication and allows us to flash firmware and upload files to the board, so we don't have to utilize any other application.  
