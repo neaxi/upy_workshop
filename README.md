@@ -1,5 +1,5 @@
 # MicroPython workshop on ESP32 
-These informations are not intended as a stand alone study material but rather as an aid and possible future reference for students which attended the workshop in person.
+These informations are not intended as a stand alone study material but rather as an aid and possible future reference for students which attended the AT&T Brno IoT workshop in person.
 ## Set-up
 ### Hardware
 ESP32 board ("WeMos" D1 R32 in our case) with MicroPython.  
