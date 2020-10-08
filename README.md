@@ -3,6 +3,7 @@ These informations are not intended as a stand alone study material but rather a
 ## Set-up
 ### Hardware
 ESP32 board ("WeMos" D1 R32 in our case) with MicroPython.  
+[Datasheet](https://github.com/SmartArduino/ESPboard/blob/master/ESPduino-32s.pdf)
 [Hardware layout](http://hobbycomponents.com/images/forum/wemos/Wemos_D1_HCWEMO0001_Diagram.png)  
 [Pinout](https://cdn.instructables.com/FFU/YFXC/JIAJNA26/FFUYFXCJIAJNA26.LARGE.jpg)
 #### Firmware
@@ -28,7 +29,7 @@ python -m esptool --port COMx --baud 921600 write_flash 0x00000 firmware_image_b
 
 ### Software
 #### Drivers
-Windows: If the drivers for CH340/341 are not installed automatically, thay can be obtained [here ](https://wiki.wemos.cc/_media/ch341ser_win_3.4.zip)  
+Windows: If the drivers for CH340/341 are not installed automatically, thay can be obtained [here ](https://github.com/HobbyComponents/CH340-Drivers/)  
 linux / MAC: ¯\\_(ツ)_/¯
 #### IDE
 [Thonny IDE](https://thonny.org/) was picked for this workshop. Reasons? Can be installed via pip, automatically detects and handles serial port communication and allows us to flash firmware and upload files to the board, so we don't have to utilize any other application.  
