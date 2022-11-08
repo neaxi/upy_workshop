@@ -1,56 +1,67 @@
 # MicroPython workshop on ESP32 
-These informations are not intended as a stand alone study material but rather as an aid and possible future reference for students which attended the AT&T Brno IoT workshop in person.
+These information are not intended as a stand alone study material but rather as an aid and possible future reference for students which attended the AT&T Brno IoT workshop in person.
 ## Set-up
 ### Hardware
-ESP32 board ("WeMos" D1 R32 in our case) with MicroPython.  
-[Datasheet](https://github.com/SmartArduino/ESPboard/blob/master/ESPduino-32s.pdf)
-[Hardware layout](http://hobbycomponents.com/images/forum/wemos/Wemos_D1_HCWEMO0001_Diagram.png)  
-[Pinout](https://cdn.instructables.com/FFU/YFXC/JIAJNA26/FFUYFXCJIAJNA26.LARGE.jpg)
+**"WeMos" D1 R32**  
+ - [Datasheet](https://github.com/SmartArduino/ESPboard/blob/master/ESPduino-32s.pdf)  
+ - [Hardware layout](http://hobbycomponents.com/images/forum/wemos/Wemos_D1_HCWEMO0001_Diagram.png)  
+ - [Pinout](https://cpb-ap-se2.wpmucdn.com/blogs.auckland.ac.nz/dist/9/698/files/2021/08/2_Pinout_D1_R32.png)
+
+**DevKitC**
+ - [Homepage](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc.html)
+ - [Schema](https://dl.espressif.com/dl/schematics/esp32_devkitc_v4-sch.pdf)
+ - [Pinout](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/_images/esp32-devkitC-v4-pinout.png)
+
 #### Firmware
-[MicroPython firmware download page](https://micropython.org/download#esp32)  
+[MicroPython firmware download page](https://micropython.org/download/esp32/)  
 For purposes of our workshop, please download following: 
- - [Download our custom firmware](https://github.com/neaxi/upy_workshop/releases/download/20190527/ESP32_ATTBrno_20190527.zip)
-    - Based on: [esp32-ppp-fix.bin](https://micropython.org/resources/firmware/esp32-ppp-fix.bin) (most recent today - 2019-05-23)
+ - [Download our custom firmware](https://github.com/neaxi/upy_workshop/releases/download/untagged-e99e035402f888513f32/ESP32_ATTBrno_workshop_2022-11-09.zip)
+    - Based on: [v1.19.1 (2022-06-18)](https://micropython.org/resources/firmware/esp32-20220618-v1.19.1.bin)
     - Embedded with uasyncio and aswitch libraries
     - With script to connect network and sync RTC via NTP on boot
 #### Flashing firmware
 Always erase the flash first, then install the new firmware.  
- a) Through Thonny IDE GUI
-   1. Thonny IDE > Device > Erase ESP flash
-   2. Thonny IDE > Device > Install MicroPython on ESP
-
- b) From CLI via [esptool](https://github.com/espressif/esptool)
+ a) From CLI via [esptool](https://github.com/espressif/esptool)
 ```
 pip3 install esptool
 python -m esptool --port COMx read_flash 0x00000 0x400000 firmware_image.bin
-python -m esptool --port COMx erase_flash
-python -m esptool --port COMx --baud 921600 write_flash 0x00000 firmware_image_backup.bin
+python -m esptool --port COMx --chip esp32 erase_flash
+python -m esptool --port COMx --baud 921600 write_flash -z 0x1000 firmware_image_backup.bin
 ```
+
+ b) Through Thonny IDE GUI
+   Tools > Options > Interpreter > Install or update MicroPython
 
 ### Software
 #### Drivers
-Windows: If the drivers for CH340/341 are not installed automatically, thay can be obtained [here ](https://github.com/HobbyComponents/CH340-Drivers/)  
+Windows: if not installed automatically:
+ - [CH340/341](https://github.com/HobbyComponents/CH340-Drivers/)  
+ - [CP210x](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads)  
+
 linux / MAC: ¯\\_(ツ)_/¯
-#### IDE
+#### IDE Setup
 [Thonny IDE](https://thonny.org/) was picked for this workshop. Reasons? Can be installed via pip, automatically detects and handles serial port communication and allows us to flash firmware and upload files to the board, so we don't have to utilize any other application.  
 Getting the IDE: 
  - [Thonny IDE Download Page](https://github.com/thonny/thonny/releases)  
  or
  - `pip3 install thonny` and `python3 -m thonny`
 
-Setting it up for ESP32:
- - install thonny-esp plug-in
-    - Tools > Manage Plug-Ins > `thonny-esp`> install
-    - restart Thonny IDE 
- - Tools > Options > Interpreter > MicroPython on ESP32
+Change Thonny IDE to use MicroPython
+ - Tools > Options > Interpreter > MicroPython (ESP32)
+ - Tools > Options > Interpreter > Port or WebREPL > Select `COM` port of your device
+
+In case we would want to download modules/libraries from PyPi:
+ - Tools > Manage packages
+
 
 **More resources:**  
 on IDE: [Thonny: The Beginner-Friendly Python Editor](https://realpython.com/python-thonny/)  
-on using IDE with ESP: [Getting Started with Thonny MicroPython (Python) IDE for ESP32 and ESP8266](https://randomnerdtutorials.com/getting-started-thonny-micropython-python-ide-esp32-esp8266/)
+on using IDE with ESP: [Getting Started with Thonny MicroPython (Python) IDE for ESP32 and ESP8266](https://randomnerdtutorials.com/getting-started-thonny-micropython-python-ide-esp32-esp8266/)  
+(please keep in mind older screenshot might not accurately represent current application)
 
 
 
-There are other IDEs, like [uPyCraft](http://docs.dfrobot.com/upycraft/) or you can utilize low-level approach via [ampy](https://github.com/pycampers/ampy) & [esptool](https://github.com/espressif/esptool/blob/master/README.md).  
+There are other IDEs, like [uPyCraft](https://dfrobot.gitbooks.io/upycraft/content/) or you can utilize low-level approach via [ampy](https://github.com/pycampers/ampy) & [esptool](https://github.com/espressif/esptool/blob/master/README.md).  
 [NodeMCU IDE comparison](https://frightanic.com/iot/tools-ides-nodemcu/)
 
 
@@ -88,34 +99,19 @@ More details available [here](https://techtutorialsx.com/2017/06/06/esp32-esp826
 ### API calls
 APIs (Application Programming Interfaces) are used to communicate between devices (IoT, servers, clients, ...). If offered to work with REST or SOAP API, politely decline SOAP and preffer REST.  
 [Detailed introduction to general concept of APIs available here.](https://www.programmableweb.com/api-university/what-are-apis-and-how-do-they-work)
-#### M2X
-[AT&T M2X](http://m2x.att.com/) platform was chosen for this workshop for it's simplicity. Similar platforms supporting IoT integration could be [ThingSpeak](https://thingspeak.com/), [IFTTT](https://thingspeak.com/) and many others...  
-&nbsp;  
-[M2X API overview](https://m2x.att.com/developer/documentation/v2/overview)  
-[M2X API cheatsheet](https://m2x.att.com/developer/documentation/v2/cheatsheet)  
 
-#### Pre-set M2X devices
-Few devices were created on the M2X platform for purposes of this workshop, so we can interface our ESP boards with a cloud service. Each of these devices has 2 data streams. One accepts numeric values only (`id:numeric`), the other custom strings (`id:non-numeric`).  
-To contact the API make sure following is set correctly in `config.py`  
- - `m2x_device_id` - unique ID of the device
- - `m2x_api_key` - key which authorizes us to perform changes 
 
-Dashboard to monitor workshop devices: [M2X AT&T Brno IoT training dashboard](https://m2x.att.com/dashboards/shared/5b4c39b189bbbc2469ba907df99cd6e6)
+
+
+
 #### Request headers
-Each network request has variable fields like headers, cookies, ... We don't need any cookies for this workshop, but will need to headers to:
- - `X-M2X-KEY` - authorize to the API
- - `Content-Type` - identify what type of data are we sending
- - `connection` - to indicate the connection can be closed once completed
- ```py
- headers = {
-"X-M2X-KEY" : m2x_api_key,
-"Content-Type" : "application/json",
-"connection" : "close"
-}
-```
+Each network request has variable fields like headers, cookies, ... Each API is different an you have to look into documentation on how to use it correctly.  
+One of the most common headers is `Content-Type` which identifies what type of data are we sending, like `"application/json"`
+
 
 #### GET request
-HTTP GET request is utilized to acquire data from the API.
+HTTP GET request is utilized to acquire data from the API.  
+Sample URL: http://my-json-server.typicode.com/neaxi/upy_workshop/
 ```py
 import urequests
 url = "https://..."
@@ -128,9 +124,6 @@ print(response.text)
 #### POST/PUT request
 HTTP POST/PUT requests are used to send data to the API and create/update entries on the endpoint.  
 Difference between POST and PUT: [IETF specs](https://techtutorialsx.com/2017/06/18/esp32-esp8266-micropython-http-post-requests/), [StackOverflow](https://stackoverflow.com/questions/630453/put-vs-post-in-rest)  
-Difference in case of M2X platform:
- - POST - used to create resources (creation of new devices)
- - PUT - used to update resources (modifying streams of the device, submitting new values)  
  
 ```py
 headers = {"Content-Type" : "application/json"}
@@ -249,9 +242,7 @@ https://github.com/goatchurchprime/jupyter_micropython_kernel/
        - `pin_btn1`, `pin_btn2` - hardware pins on which we connected the buttons
        - `ssid` - to which wi-fi network shall we connect? used for automatic connection
        - `passwd` - wi-fi password  
-       - `m2x_device_id` - M2X device we're updating
-       - `m2x_api_key` - device access key for the M2X
  - functional files 
     - [`wifi_and_ntp.py`](wifi_and_ntp.py) - utility for automatic wifi and ntp connection
     - [`io.py`](io.py) - hardware input/output related code
-    - [`api_test.py`](api_test.py) - to test GET/PUT API calls against AT&T M2X (similar to ThingSpeak) service
+    - [`api_test.py`](api_test.py) - to test GET/PUT API calls against API of IoT service
