@@ -83,6 +83,17 @@ Takes advantage of asynchronous programming, which allows to run multiple tasks 
 aswitch library has built-in class for pushbutton, which correctly handles click, double-click, long press and filters out the button bounces.  
 `asyncio.await()` in the `async_tick_tock()` pauses the cycle execution, so asyncio can run other tasks queued in the asyncio event loop.  
 `>>> io.test_non_blocking_asyncio()`
+
+#### ADC
+Lets test analog input with a photoresistor.  
+`ADC.read()` range: 12 bit ADC => 2<sup>12</sup> => 0-4095 values
+```py
+adc = ADC(Pin(34)) 
+adc.atten(ADC.ATTN_11DB) # 3.3V range
+print(adc.read()) # raw value 
+print(adc.read()/4096 * 3.3) # coverted to voltage
+```
+
 ## Connectivity
 ### Automatic WiFi connection and RTC clock sync
 1. upload provided `wifi_and_ntp.py` into root directory on the ESP
