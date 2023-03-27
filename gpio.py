@@ -13,7 +13,7 @@ micropython.alloc_emergency_exception_buf(100)
 
 # load from config on which pins we have the buttons
 try:
-    from config import pin_btn01, pin_btn02
+    from config import pin_btn01, pin_btn02, pin_led, pin_adc
 except:
     raise Exception("Failed to load button pin assignments from config")
 
@@ -59,7 +59,7 @@ def button_operation(pin, operation=None):
 # ----------------------------------------
 
 
-def blink(pin=2):
+def blink(pin=pin_led):
     """put the pin in the HIGH state, wait 2 sec, LOW again
     pin 2 is the onboard LED
     """
@@ -112,7 +112,7 @@ async def test_btn(pin, suppress=True, lf=True, df=True):
     pb = Pushbutton(pin, suppress)
     print('{} set up'.format(pin))
     pb.press_func(button_operation, (str(pin), "pushed",))
-    pb.release_func(button_operation, (str(pin), "released",))    
+    pb.release_func(button_operation, (str(pin), "released",))
     pb.double_func(button_operation, (str(pin), "double-clicked",))
     pb.long_func(button_operation, (str(pin), "long pressed",))
 
@@ -125,9 +125,22 @@ def test_non_blocking_asyncio():
     """
     pin1 = machine.Pin(pin_btn01, machine.Pin.IN, machine.Pin.PULL_UP)
     pin2 = machine.Pin(pin_btn02, machine.Pin.IN, machine.Pin.PULL_UP)
-    
+
     loop = asyncio.get_event_loop(runq_len=40, waitq_len=40)
     asyncio.create_task(test_btn(pin1))
     asyncio.create_task(test_btn(pin2))
     asyncio.create_task(ticking_loop())
     loop.run_forever()
+
+
+# ----------------------------------------
+# ADC Input
+# ----------------------------------------
+def test_adc_input(pin=pin_adc):
+    adc = machine.ADC(machine.Pin(pin))
+    adc.atten(machine.ADC.ATTN_11DB)  # 3.3V range
+    while True:
+        raw = adc.read()  # raw value
+        volt = adc.read() / 4096 * 3.3  # coverted to voltage
+        print(f"Raw: {raw} -> Voltage: {volt}")
+        time.sleep(0.3)

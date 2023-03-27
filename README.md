@@ -15,7 +15,7 @@ These information are not intended as a stand alone study material but rather as
 #### Firmware
 [MicroPython firmware download page](https://micropython.org/download/esp32/)  
 For purposes of our workshop, please download following: 
- - [Download our custom firmware](https://github.com/neaxi/upy_workshop/releases/download/untagged-e99e035402f888513f32/ESP32_ATTBrno_workshop_2022-11-09.zip)
+ - [Download our custom firmware](https://github.com/neaxi/upy_workshop/releases/download/20230321/ESP32_att_2023-03-21.zip)
     - Based on: [v1.19.1 (2022-06-18)](https://micropython.org/resources/firmware/esp32-20220618-v1.19.1.bin)
     - Embedded with uasyncio and aswitch libraries
     - With script to connect network and sync RTC via NTP on boot
@@ -66,23 +66,34 @@ There are other IDEs, like [uPyCraft](https://dfrobot.gitbooks.io/upycraft/conte
 
 
 ## Input/Output
-[io.py](io.py) - code related to following I/O operations
+[gpio.py](gpio.py) - code related to following I/O operations
 ### Output
 Built-in onboard LED is connected to Pin2. Let's try to turn it on and off.  
-`>>> io.blink()`
+`>>> gpio.blink()`
 ### Input
 #### Blocking
 We're periodically checking for state change of the pin in a loop. Also the application won't respond to the user while it's running the loop. Although the functions sets both buttons, the program stucks on the checking loop for the first.  
-`>>> io.test_blocking_input()`
+`>>> gpio.test_blocking_input()`
 #### Non-blocking, IRQ
 Utilizes hardware interrupts. When state change on the pin is detected, interrupt is raised and calls the function binded to it.  
-`>>> io.test_non_blocking_irq()`
+`>>> gpio.test_non_blocking_irq()`
 #### Non-blocking, uasyncio
 libraries needed: [uasyncio](https://github.com/peterhinch/micropython-async) and [aswitch](https://github.com/peterhinch/micropython-async/blob/master/aswitch.py). See [Sidenotes > Libraries installation](#libraries-installation)  
 Takes advantage of asynchronous programming, which allows to run multiple tasks in parallel.  
 aswitch library has built-in class for pushbutton, which correctly handles click, double-click, long press and filters out the button bounces.  
 `asyncio.await()` in the `async_tick_tock()` pauses the cycle execution, so asyncio can run other tasks queued in the asyncio event loop.  
-`>>> io.test_non_blocking_asyncio()`
+`>>> gpio.test_non_blocking_asyncio()`
+
+#### ADC
+Lets test analog input with a photoresistor.  
+`ADC.read()` range: 12 bit ADC => 2<sup>12</sup> => 0-4095 values
+```py
+adc = ADC(Pin(34)) 
+adc.atten(ADC.ATTN_11DB) # 3.3V range
+print(adc.read()) # raw value 
+print(adc.read()/4096 * 3.3) # coverted to voltage
+```
+
 ## Connectivity
 ### Automatic WiFi connection and RTC clock sync
 1. upload provided `wifi_and_ntp.py` into root directory on the ESP
@@ -171,8 +182,8 @@ For multiple parallel HTTPS connections look for ESP32 with SPI RAM.
 #### Queue issues with uasyncio
 ```py
 Traceback (most recent call last):
-  File "C:\Users\Fred\ESP\io.py", line 142, in <module>
-  File "C:\Users\Fred\ESP\io.py", line 137, in test_non_blocking_asyncio
+  File "C:\Users\Fred\ESP\gpio.py", line 142, in <module>
+  File "C:\Users\Fred\ESP\gpio.py", line 137, in test_non_blocking_asyncio
   File "/lib/uasyncio/core.py", line 168, in run_forever
   File "/lib/uasyncio/core.py", line 59, in call_later_ms
   File "/lib/uasyncio/core.py", line 64, in call_at_
@@ -244,5 +255,5 @@ https://github.com/goatchurchprime/jupyter_micropython_kernel/
        - `passwd` - wi-fi password  
  - functional files 
     - [`wifi_and_ntp.py`](wifi_and_ntp.py) - utility for automatic wifi and ntp connection
-    - [`io.py`](io.py) - hardware input/output related code
+    - [`gpio.py`](io.py) - hardware input/output related code
     - [`api_test.py`](api_test.py) - to test GET/PUT API calls against API of IoT service
